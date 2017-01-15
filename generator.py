@@ -25,13 +25,15 @@ from grammar import *
 from preprocess import *
 from qa import *
 import lstm
+from scipy.misc import logsumexp
 
 #----------------------------HELPER FUNCTIONS----------------------------------#
 
 ''' Helper function to sample an index from a probability array '''
 def __sample(a, temperature=1.0):
-    a = np.log(a) / temperature
-    a = np.exp(a) / np.sum(np.exp(a))
+    #a = np.log(a) / temperature
+    #a = np.exp(a) / np.sum(np.exp(a))
+    a = np.exp(a - logsumexp(a))
     return np.argmax(np.random.multinomial(1, a, 1))
 
 ''' Helper function to generate a predicted value from a given matrix '''
